@@ -1,0 +1,4308 @@
+{
+  "name": "Kafka",
+  "description": "",
+  "version": "1.7.1",
+  "vendor": "Infoview Systems Inc",
+  "category": "COMMUNITY",
+  "xmlDsl": {
+    "prefix": "kafka",
+    "namespace": "http://www.mulesoft.org/schema/mule/kafka",
+    "schemaLocation": "http://www.mulesoft.org/schema/mule/kafka/current/mule-kafka.xsd",
+    "schemaVersion": "1.7.1",
+    "xsdFileName": "mule-kafka.xsd"
+  },
+  "resources": [],
+  "subTypes": [
+    {
+      "baseType": {
+        "format": "java",
+        "type": "@ref:org.mule.extension.kafka.internal.auth.sasl.SASLAuthMethod"
+      },
+      "subTypes": [
+        {
+          "format": "java",
+          "type": "@ref:org.mule.extension.kafka.internal.auth.sasl.JAASMethod"
+        },
+        {
+          "format": "java",
+          "type": "@ref:org.mule.extension.kafka.internal.auth.sasl.PLAINMethod"
+        }
+      ]
+    },
+    {
+      "baseType": {
+        "format": "java",
+        "type": "@ref:org.mule.extension.kafka.internal.storage.OffsetsStorage"
+      },
+      "subTypes": [
+        {
+          "format": "java",
+          "type": "@ref:org.mule.extension.kafka.internal.storage.standard.StandardKafkaStorage"
+        },
+        {
+          "format": "java",
+          "type": "@ref:org.mule.extension.kafka.internal.storage.azure.AzureEventHubStorage"
+        },
+        {
+          "format": "java",
+          "type": "@ref:org.mule.extension.kafka.internal.storage.custom.CustomStorage"
+        }
+      ]
+    },
+    {
+      "baseType": {
+        "format": "java",
+        "type": "@ref:org.mule.extension.kafka.internal.ack.policy.FailBackPolicy"
+      },
+      "subTypes": [
+        {
+          "format": "java",
+          "type": "@ref:org.mule.extension.kafka.internal.ack.policy.FixedRetry"
+        },
+        {
+          "format": "java",
+          "type": "@ref:org.mule.extension.kafka.internal.ack.policy.ForeverRetry"
+        }
+      ]
+    }
+  ],
+  "privilegedPackages": [],
+  "privilegedArtifacts": [],
+  "externalLibraries": [],
+  "importedTypes": [
+    {
+      "format": "java",
+      "type": "Object",
+      "annotations": {
+        "typeId": "org.mule.runtime.api.store.ObjectStore",
+        "extensibleType": {},
+        "typeAlias": {
+          "value": "ObjectStore"
+        },
+        "classInformation": {
+          "classname": "org.mule.runtime.api.store.ObjectStore",
+          "hasDefaultConstructor": false,
+          "isInterface": true,
+          "isInstantiable": false,
+          "isAbstract": true,
+          "isFinal": false,
+          "implementedInterfaces": [],
+          "parent": "",
+          "genericTypes": [],
+          "isMap": false
+        }
+      },
+      "fields": []
+    }
+  ],
+  "configurations": [
+    {
+      "stereotype": {
+        "type": "CONFIG",
+        "namespace": "KAFKA",
+        "parent": {
+          "type": "MODULE_CONFIG",
+          "namespace": "MULE"
+        }
+      },
+      "parameterGroupModels": [
+        {
+          "parameters": [
+            {
+              "type": {
+                "format": "java",
+                "type": "Object",
+                "annotations": {
+                  "typeId": "org.mule.runtime.extension.api.runtime.ExpirationPolicy",
+                  "description": {
+                    "value": "Configures the minimum amount of time that a dynamic configuration instance can remain idle before the runtime considers it eligible for expiration. This does not mean that the platform will expire the instance at the exact moment that it becomes eligible. The runtime will actually purge the instances when it sees it fit."
+                  },
+                  "typeDsl": {
+                    "allowInlineDefinition": true,
+                    "allowTopLevelDefinition": false
+                  }
+                },
+                "fields": [
+                  {
+                    "key": {
+                      "name": "maxIdleTime"
+                    },
+                    "model": {
+                      "type": "Number",
+                      "annotations": {
+                        "int": {},
+                        "classInformation": {
+                          "classname": "java.lang.Long",
+                          "hasDefaultConstructor": false,
+                          "isInterface": false,
+                          "isInstantiable": false,
+                          "isAbstract": false,
+                          "isFinal": true,
+                          "implementedInterfaces": [
+                            "java.lang.Comparable"
+                          ],
+                          "parent": "java.lang.Number",
+                          "genericTypes": [],
+                          "isMap": false
+                        },
+                        "default": "5"
+                      }
+                    },
+                    "annotations": {
+                      "description": {
+                        "value": "A scalar time value for the maximum amount of time a dynamic configuration instance should be allowed to be idle before it\u0027s considered eligible for expiration"
+                      },
+                      "expressionSupport": {
+                        "value": "NOT_SUPPORTED"
+                      }
+                    }
+                  },
+                  {
+                    "key": {
+                      "name": "timeUnit"
+                    },
+                    "model": {
+                      "type": "String",
+                      "annotations": {
+                        "enum": {
+                          "type": "[Ljava.lang.String;",
+                          "values": [
+                            "NANOSECONDS",
+                            "MICROSECONDS",
+                            "MILLISECONDS",
+                            "SECONDS",
+                            "MINUTES",
+                            "HOURS",
+                            "DAYS"
+                          ]
+                        },
+                        "default": "MINUTES"
+                      }
+                    },
+                    "annotations": {
+                      "description": {
+                        "value": "A time unit that qualifies the maxIdleTime attribute"
+                      },
+                      "expressionSupport": {
+                        "value": "NOT_SUPPORTED"
+                      }
+                    }
+                  }
+                ]
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "NOT_SUPPORTED",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": false,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 1,
+                "tabName": "Advanced"
+              },
+              "allowedStereotypeModels": [],
+              "name": "expirationPolicy",
+              "description": "Configures the minimum amount of time that a dynamic configuration instance can remain idle before the runtime considers it eligible for expiration. This does not mean that the platform will expire the instance at the exact moment that it becomes eligible. The runtime will actually purge the instances when it sees it fit.",
+              "modelProperties": {
+                "org.mule.runtime.extension.api.property.QNameModelProperty": {
+                  "value": {
+                    "namespaceURI": "http://www.mulesoft.org/schema/mule/core",
+                    "localPart": "expiration-policy",
+                    "prefix": "mule"
+                  }
+                },
+                "org.mule.runtime.extension.api.property.InfrastructureParameterModelProperty": {
+                  "sequence": 4
+                }
+              }
+            }
+          ],
+          "exclusiveParametersModels": [],
+          "layoutModel": {
+            "password": false,
+            "text": false,
+            "query": false,
+            "order": 1
+          },
+          "showInDsl": false,
+          "name": "General",
+          "description": "",
+          "modelProperties": {}
+        }
+      ],
+      "externalLibraryModels": [],
+      "operations": [],
+      "connectionProviders": [
+        {
+          "connectionManagementType": "CACHED",
+          "externalLibraryModels": [],
+          "supportsConnectivityTesting": true,
+          "stereotype": {
+            "type": "EVENT-HUB",
+            "namespace": "KAFKA",
+            "parent": {
+              "type": "CONNECTION",
+              "namespace": "MULE"
+            }
+          },
+          "parameterGroupModels": [
+            {
+              "parameters": [
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "Object",
+                    "annotations": {
+                      "classInformation": {
+                        "classname": "java.util.Properties",
+                        "hasDefaultConstructor": true,
+                        "isInterface": false,
+                        "isInstantiable": true,
+                        "isAbstract": false,
+                        "isFinal": false,
+                        "implementedInterfaces": [],
+                        "parent": "java.util.Hashtable",
+                        "genericTypes": [],
+                        "isMap": true
+                      }
+                    },
+                    "open": {
+                      "type": "Object",
+                      "annotations": {
+                        "typeId": "java.lang.Object",
+                        "classInformation": {
+                          "classname": "java.lang.Object",
+                          "hasDefaultConstructor": true,
+                          "isInterface": false,
+                          "isInstantiable": true,
+                          "isAbstract": false,
+                          "isFinal": false,
+                          "implementedInterfaces": [],
+                          "parent": "",
+                          "genericTypes": [],
+                          "isMap": false
+                        },
+                        "typeAlias": {
+                          "value": "Object"
+                        }
+                      },
+                      "fields": []
+                    },
+                    "fields": []
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "SUPPORTED",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 6,
+                    "tabName": "Extra"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "extraProperties",
+                  "displayModel": {
+                    "displayName": "Additional properties"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "Boolean",
+                    "annotations": {
+                      "typeId": "boolean"
+                    }
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "SUPPORTED",
+                  "defaultValue": "false",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 7,
+                    "tabName": "Test"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "testModeEnabled",
+                  "displayModel": {
+                    "displayName": "Test Mode"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "hasDynamicType": false,
+                  "required": true,
+                  "isConfigOverride": false,
+                  "expressionSupport": "SUPPORTED",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 1,
+                    "tabName": "General"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "namespaceName",
+                  "displayModel": {
+                    "displayName": "Event Hub Namespace"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "SUPPORTED",
+                  "defaultValue": "servicebus.windows.net",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 2,
+                    "tabName": "General"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "domainName",
+                  "displayModel": {
+                    "displayName": "Event Hub Domain Name"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "hasDynamicType": false,
+                  "required": true,
+                  "isConfigOverride": false,
+                  "expressionSupport": "SUPPORTED",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 3,
+                    "tabName": "General"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "eventHubName",
+                  "displayModel": {
+                    "displayName": "Event Hub Name"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "hasDynamicType": false,
+                  "required": true,
+                  "isConfigOverride": false,
+                  "expressionSupport": "SUPPORTED",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 4,
+                    "tabName": "General"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "sasKeyName",
+                  "displayModel": {
+                    "displayName": "Shared Access Key Name"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "hasDynamicType": false,
+                  "required": true,
+                  "isConfigOverride": false,
+                  "expressionSupport": "SUPPORTED",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 5,
+                    "tabName": "General"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "sasKey",
+                  "displayModel": {
+                    "displayName": "Shared Access Key"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                }
+              ],
+              "exclusiveParametersModels": [],
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 1
+              },
+              "showInDsl": false,
+              "name": "General",
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "parameters": [
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "Object",
+                    "annotations": {
+                      "typeId": "Reconnection"
+                    },
+                    "fields": [
+                      {
+                        "key": {
+                          "name": "failsDeployment"
+                        },
+                        "model": {
+                          "type": "Boolean",
+                          "annotations": {
+                            "default": "false"
+                          }
+                        },
+                        "annotations": {
+                          "description": {
+                            "value": "When the application is deployed, a connectivity test is performed on all connectors. If set to true, deployment will fail if the test doesn\u0027t pass after exhausting the associated reconnection strategy"
+                          }
+                        }
+                      },
+                      {
+                        "key": {
+                          "name": "reconnectionStrategy"
+                        },
+                        "model": {
+                          "type": "Union",
+                          "annotations": {
+                            "typeId": "ReconnectionStrategy"
+                          },
+                          "of": [
+                            {
+                              "type": "Object",
+                              "annotations": {
+                                "typeId": "reconnect"
+                              },
+                              "fields": [
+                                {
+                                  "key": {
+                                    "name": "frequency"
+                                  },
+                                  "model": {
+                                    "type": "Number",
+                                    "annotations": {
+                                      "int": {},
+                                      "classInformation": {
+                                        "classname": "java.lang.Long",
+                                        "hasDefaultConstructor": false,
+                                        "isInterface": false,
+                                        "isInstantiable": false,
+                                        "isAbstract": false,
+                                        "isFinal": true,
+                                        "implementedInterfaces": [
+                                          "java.lang.Comparable"
+                                        ],
+                                        "parent": "java.lang.Number",
+                                        "genericTypes": [],
+                                        "isMap": false
+                                      },
+                                      "default": "2000"
+                                    }
+                                  },
+                                  "annotations": {
+                                    "description": {
+                                      "value": "How often (in ms) to reconnect"
+                                    }
+                                  }
+                                },
+                                {
+                                  "key": {
+                                    "name": "count"
+                                  },
+                                  "model": {
+                                    "type": "Number",
+                                    "annotations": {
+                                      "int": {},
+                                      "default": "2"
+                                    }
+                                  },
+                                  "annotations": {
+                                    "description": {
+                                      "value": "How many reconnection attempts to make"
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Object",
+                              "annotations": {
+                                "typeId": "reconnect-forever"
+                              },
+                              "fields": [
+                                {
+                                  "key": {
+                                    "name": "frequency"
+                                  },
+                                  "model": {
+                                    "type": "Number",
+                                    "annotations": {
+                                      "int": {},
+                                      "classInformation": {
+                                        "classname": "java.lang.Long",
+                                        "hasDefaultConstructor": false,
+                                        "isInterface": false,
+                                        "isInstantiable": false,
+                                        "isAbstract": false,
+                                        "isFinal": true,
+                                        "implementedInterfaces": [
+                                          "java.lang.Comparable"
+                                        ],
+                                        "parent": "java.lang.Number",
+                                        "genericTypes": [],
+                                        "isMap": false
+                                      },
+                                      "default": "2000"
+                                    }
+                                  },
+                                  "annotations": {
+                                    "description": {
+                                      "value": "How often (in ms) to reconnect"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "annotations": {
+                          "description": {
+                            "value": "The reconnection strategy to use"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": false,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 8,
+                    "tabName": "Advanced"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "reconnection",
+                  "description": "When the application is deployed, a connectivity test is performed on all connectors. If set to true, deployment will fail if the test doesn\u0027t pass after exhausting the associated reconnection strategy",
+                  "modelProperties": {
+                    "org.mule.runtime.extension.api.property.QNameModelProperty": {
+                      "value": {
+                        "namespaceURI": "http://www.mulesoft.org/schema/mule/core",
+                        "localPart": "reconnection",
+                        "prefix": "mule"
+                      }
+                    },
+                    "org.mule.runtime.extension.api.property.InfrastructureParameterModelProperty": {
+                      "sequence": 3
+                    }
+                  }
+                }
+              ],
+              "exclusiveParametersModels": [],
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 2
+              },
+              "showInDsl": false,
+              "name": "Connection",
+              "description": "",
+              "modelProperties": {}
+            }
+          ],
+          "name": "event-hub",
+          "displayModel": {
+            "displayName": "Azure Event Hub Connection"
+          },
+          "description": "",
+          "modelProperties": {}
+        },
+        {
+          "connectionManagementType": "CACHED",
+          "externalLibraryModels": [],
+          "supportsConnectivityTesting": true,
+          "stereotype": {
+            "type": "KAFKA",
+            "namespace": "KAFKA",
+            "parent": {
+              "type": "CONNECTION",
+              "namespace": "MULE"
+            }
+          },
+          "parameterGroupModels": [
+            {
+              "parameters": [
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "Object",
+                    "annotations": {
+                      "classInformation": {
+                        "classname": "java.util.Properties",
+                        "hasDefaultConstructor": true,
+                        "isInterface": false,
+                        "isInstantiable": true,
+                        "isAbstract": false,
+                        "isFinal": false,
+                        "implementedInterfaces": [],
+                        "parent": "java.util.Hashtable",
+                        "genericTypes": [],
+                        "isMap": true
+                      }
+                    },
+                    "open": {
+                      "type": "Object",
+                      "annotations": {
+                        "typeId": "java.lang.Object",
+                        "classInformation": {
+                          "classname": "java.lang.Object",
+                          "hasDefaultConstructor": true,
+                          "isInterface": false,
+                          "isInstantiable": true,
+                          "isAbstract": false,
+                          "isFinal": false,
+                          "implementedInterfaces": [],
+                          "parent": "",
+                          "genericTypes": [],
+                          "isMap": false
+                        },
+                        "typeAlias": {
+                          "value": "Object"
+                        }
+                      },
+                      "fields": []
+                    },
+                    "fields": []
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "SUPPORTED",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 3,
+                    "tabName": "Extra"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "extraProperties",
+                  "displayModel": {
+                    "displayName": "Additional properties"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "Boolean",
+                    "annotations": {
+                      "typeId": "boolean"
+                    }
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "SUPPORTED",
+                  "defaultValue": "false",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 4,
+                    "tabName": "Test"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "testModeEnabled",
+                  "displayModel": {
+                    "displayName": "Test Mode"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "hasDynamicType": false,
+                  "required": true,
+                  "isConfigOverride": false,
+                  "expressionSupport": "SUPPORTED",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 1,
+                    "tabName": "General"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "bootstrapServers",
+                  "displayModel": {
+                    "displayName": "Bootstrap Server",
+                    "example": "localhost:9092"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                }
+              ],
+              "exclusiveParametersModels": [],
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 1
+              },
+              "showInDsl": false,
+              "name": "General",
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "parameters": [
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "String",
+                    "annotations": {
+                      "typeId": "org.mule.extension.kafka.api.enums.SecurityProtocol",
+                      "enum": {
+                        "type": "[Ljava.lang.String;",
+                        "values": [
+                          "SSL",
+                          "PLAINTEXT",
+                          "SASL_SSL",
+                          "SASL_PLAINTEXT"
+                        ]
+                      }
+                    }
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "SUPPORTED",
+                  "defaultValue": "PLAINTEXT",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 1,
+                    "tabName": "General"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "securityProtocol",
+                  "displayModel": {
+                    "displayName": "Security Protocol"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "@ref:org.mule.extension.kafka.internal.auth.sasl.SASLAuthMethod"
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": false,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 2,
+                    "tabName": "General"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "saslAuthMethod",
+                  "displayModel": {
+                    "displayName": "Authorization Method"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                }
+              ],
+              "exclusiveParametersModels": [],
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 2
+              },
+              "showInDsl": true,
+              "name": "Kafka Security",
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "parameters": [
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "Object",
+                    "annotations": {
+                      "typeId": "Reconnection"
+                    },
+                    "fields": [
+                      {
+                        "key": {
+                          "name": "failsDeployment"
+                        },
+                        "model": {
+                          "type": "Boolean",
+                          "annotations": {
+                            "default": "false"
+                          }
+                        },
+                        "annotations": {
+                          "description": {
+                            "value": "When the application is deployed, a connectivity test is performed on all connectors. If set to true, deployment will fail if the test doesn\u0027t pass after exhausting the associated reconnection strategy"
+                          }
+                        }
+                      },
+                      {
+                        "key": {
+                          "name": "reconnectionStrategy"
+                        },
+                        "model": {
+                          "type": "Union",
+                          "annotations": {
+                            "typeId": "ReconnectionStrategy"
+                          },
+                          "of": [
+                            {
+                              "type": "Object",
+                              "annotations": {
+                                "typeId": "reconnect"
+                              },
+                              "fields": [
+                                {
+                                  "key": {
+                                    "name": "frequency"
+                                  },
+                                  "model": {
+                                    "type": "Number",
+                                    "annotations": {
+                                      "int": {},
+                                      "classInformation": {
+                                        "classname": "java.lang.Long",
+                                        "hasDefaultConstructor": false,
+                                        "isInterface": false,
+                                        "isInstantiable": false,
+                                        "isAbstract": false,
+                                        "isFinal": true,
+                                        "implementedInterfaces": [
+                                          "java.lang.Comparable"
+                                        ],
+                                        "parent": "java.lang.Number",
+                                        "genericTypes": [],
+                                        "isMap": false
+                                      },
+                                      "default": "2000"
+                                    }
+                                  },
+                                  "annotations": {
+                                    "description": {
+                                      "value": "How often (in ms) to reconnect"
+                                    }
+                                  }
+                                },
+                                {
+                                  "key": {
+                                    "name": "count"
+                                  },
+                                  "model": {
+                                    "type": "Number",
+                                    "annotations": {
+                                      "int": {},
+                                      "default": "2"
+                                    }
+                                  },
+                                  "annotations": {
+                                    "description": {
+                                      "value": "How many reconnection attempts to make"
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Object",
+                              "annotations": {
+                                "typeId": "reconnect-forever"
+                              },
+                              "fields": [
+                                {
+                                  "key": {
+                                    "name": "frequency"
+                                  },
+                                  "model": {
+                                    "type": "Number",
+                                    "annotations": {
+                                      "int": {},
+                                      "classInformation": {
+                                        "classname": "java.lang.Long",
+                                        "hasDefaultConstructor": false,
+                                        "isInterface": false,
+                                        "isInstantiable": false,
+                                        "isAbstract": false,
+                                        "isFinal": true,
+                                        "implementedInterfaces": [
+                                          "java.lang.Comparable"
+                                        ],
+                                        "parent": "java.lang.Number",
+                                        "genericTypes": [],
+                                        "isMap": false
+                                      },
+                                      "default": "2000"
+                                    }
+                                  },
+                                  "annotations": {
+                                    "description": {
+                                      "value": "How often (in ms) to reconnect"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "annotations": {
+                          "description": {
+                            "value": "The reconnection strategy to use"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": false,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 5,
+                    "tabName": "Advanced"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "reconnection",
+                  "description": "When the application is deployed, a connectivity test is performed on all connectors. If set to true, deployment will fail if the test doesn\u0027t pass after exhausting the associated reconnection strategy",
+                  "modelProperties": {
+                    "org.mule.runtime.extension.api.property.QNameModelProperty": {
+                      "value": {
+                        "namespaceURI": "http://www.mulesoft.org/schema/mule/core",
+                        "localPart": "reconnection",
+                        "prefix": "mule"
+                      }
+                    },
+                    "org.mule.runtime.extension.api.property.InfrastructureParameterModelProperty": {
+                      "sequence": 3
+                    }
+                  }
+                }
+              ],
+              "exclusiveParametersModels": [],
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 3
+              },
+              "showInDsl": false,
+              "name": "Connection",
+              "description": "",
+              "modelProperties": {}
+            }
+          ],
+          "name": "kafka",
+          "displayModel": {
+            "displayName": "Kafka Connection"
+          },
+          "description": "",
+          "modelProperties": {}
+        }
+      ],
+      "messageSources": [
+        {
+          "hasResponse": true,
+          "runsOnPrimaryNodeOnly": false,
+          "successCallback": {
+            "parameterGroupModels": [],
+            "name": "onSuccess",
+            "description": "",
+            "modelProperties": {}
+          },
+          "errorCallback": {
+            "parameterGroupModels": [],
+            "name": "onError",
+            "description": "",
+            "modelProperties": {}
+          },
+          "output": {
+            "type": {
+              "format": "json",
+              "type": "String"
+            },
+            "hasDynamicType": false,
+            "description": "",
+            "modelProperties": {}
+          },
+          "outputAttributes": {
+            "type": {
+              "format": "java",
+              "type": "@ref:org.mule.extension.kafka.api.attributes.KafkaEventAttributes"
+            },
+            "hasDynamicType": false,
+            "description": "",
+            "modelProperties": {}
+          },
+          "transactional": false,
+          "requiresConnection": true,
+          "supportsStreaming": false,
+          "notifications": [],
+          "nestedComponents": [],
+          "errors": [],
+          "stereotype": {
+            "type": "SOURCE",
+            "namespace": "MULE"
+          },
+          "parameterGroupModels": [
+            {
+              "parameters": [
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "hasDynamicType": false,
+                  "required": true,
+                  "isConfigOverride": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 1,
+                    "tabName": "General"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "topicName",
+                  "displayModel": {
+                    "displayName": "Topic Name"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "hasDynamicType": false,
+                  "required": true,
+                  "isConfigOverride": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 2,
+                    "tabName": "General"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "consumerGroup",
+                  "displayModel": {
+                    "displayName": "Consumer Group"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "String",
+                    "annotations": {
+                      "typeId": "org.mule.extension.kafka.api.enums.AckMode",
+                      "enum": {
+                        "type": "[Ljava.lang.String;",
+                        "values": [
+                          "IMMEDIATE",
+                          "AUTO"
+                        ]
+                      }
+                    }
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "defaultValue": "AUTO",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 1,
+                    "tabName": "Ack"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "ackMode",
+                  "displayModel": {
+                    "displayName": "Acknowledgement mode"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "@ref:org.mule.extension.kafka.internal.ack.policy.FailBackPolicy"
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": false,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 2,
+                    "tabName": "Ack"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "failBackPolicy",
+                  "displayModel": {
+                    "displayName": "Fail Back strategy"
+                  },
+                  "description": "",
+                  "modelProperties": {
+                    "org.mule.runtime.extension.api.property.DefaultImplementingTypeModelProperty": {
+                      "defaultType": {
+                        "format": "java",
+                        "type": "@ref:org.mule.extension.kafka.internal.ack.policy.ForeverRetry"
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "@ref:org.mule.extension.kafka.internal.storage.OffsetsStorage"
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": false,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 3,
+                    "tabName": "Ack"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "mainOffsetsStorage",
+                  "displayModel": {
+                    "displayName": "Main Offsets storage"
+                  },
+                  "description": "",
+                  "modelProperties": {
+                    "org.mule.runtime.extension.api.property.DefaultImplementingTypeModelProperty": {
+                      "defaultType": {
+                        "format": "java",
+                        "type": "@ref:org.mule.extension.kafka.internal.storage.standard.StandardKafkaStorage"
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "@ref:org.mule.extension.kafka.internal.storage.OffsetsStorage"
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": false,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 4,
+                    "tabName": "Ack"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "initialOffsetsStorage",
+                  "displayModel": {
+                    "displayName": "Initial Offsets storage",
+                    "summary": "Initial offset storage is only used in case there is no information about offsets in main storage"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "SUPPORTED",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 6,
+                    "tabName": "Advanced"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "outputMimeType",
+                  "description": "The mime type of the payload that this operation outputs.",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "Boolean"
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "defaultValue": false,
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 9,
+                    "tabName": "Advanced"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "primaryNodeOnly",
+                  "description": "Whether this source should only be executed on the primary node when runnning in Cluster",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "Object",
+                    "annotations": {
+                      "typeId": "RedeliveryPolicy"
+                    },
+                    "fields": [
+                      {
+                        "key": {
+                          "name": "maxRedeliveryCount"
+                        },
+                        "model": {
+                          "type": "Number",
+                          "annotations": {
+                            "int": {},
+                            "default": "5"
+                          }
+                        },
+                        "annotations": {
+                          "description": {
+                            "value": "The maximum number of times a message can be redelivered and processed unsuccessfully before triggering process-failed-message"
+                          }
+                        }
+                      },
+                      {
+                        "key": {
+                          "name": "useSecureHash"
+                        },
+                        "model": {
+                          "type": "Boolean",
+                          "annotations": {
+                            "default": "true"
+                          }
+                        },
+                        "annotations": {
+                          "description": {
+                            "value": "Whether to use a secure hash algorithm to identify a redelivered message"
+                          }
+                        }
+                      },
+                      {
+                        "key": {
+                          "name": "messageDigestAlgorithm"
+                        },
+                        "model": {
+                          "type": "String"
+                        },
+                        "annotations": {
+                          "description": {
+                            "value": "The secure hashing algorithm to use. If not set, the default is SHA-256."
+                          }
+                        }
+                      },
+                      {
+                        "key": {
+                          "name": "idExpression"
+                        },
+                        "model": {
+                          "type": "String"
+                        },
+                        "annotations": {
+                          "description": {
+                            "value": "Defines one or more expressions to use to determine when a message has been redelivered. This property may only be set if useSecureHash is false."
+                          }
+                        }
+                      },
+                      {
+                        "key": {
+                          "name": "objectStore"
+                        },
+                        "model": {
+                          "type": "@ref:org.mule.runtime.api.store.ObjectStore"
+                        },
+                        "annotations": {
+                          "stereotype": {
+                            "allowedStereotypes": [
+                              {
+                                "type": "OBJECT_STORE",
+                                "namespace": "OS"
+                              }
+                            ]
+                          },
+                          "description": {
+                            "value": "The object store where the redelivery counter for each message is going to be stored."
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": false,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 7,
+                    "tabName": "Redelivery"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "redeliveryPolicy",
+                  "description": "Defines a policy for processing the redelivery of the same message",
+                  "modelProperties": {
+                    "org.mule.runtime.extension.api.property.QNameModelProperty": {
+                      "value": {
+                        "namespaceURI": "http://www.mulesoft.org/schema/mule/core",
+                        "localPart": "abstract-redelivery-policy",
+                        "prefix": "mule"
+                      }
+                    },
+                    "org.mule.runtime.extension.api.property.InfrastructureParameterModelProperty": {
+                      "sequence": 1
+                    }
+                  }
+                }
+              ],
+              "exclusiveParametersModels": [],
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 1
+              },
+              "showInDsl": false,
+              "name": "General",
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "parameters": [
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "Number",
+                    "annotations": {
+                      "classInformation": {
+                        "classname": "java.lang.Long",
+                        "hasDefaultConstructor": false,
+                        "isInterface": false,
+                        "isInstantiable": false,
+                        "isAbstract": false,
+                        "isFinal": true,
+                        "implementedInterfaces": [
+                          "java.lang.Comparable"
+                        ],
+                        "parent": "java.lang.Number",
+                        "genericTypes": [],
+                        "isMap": false
+                      },
+                      "int": {}
+                    }
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "defaultValue": "500",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 1,
+                    "tabName": "General"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "pollPeriod",
+                  "displayModel": {
+                    "displayName": "Polling Period"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "String",
+                    "annotations": {
+                      "typeId": "java.util.concurrent.TimeUnit",
+                      "enum": {
+                        "type": "[Ljava.lang.String;",
+                        "values": [
+                          "NANOSECONDS",
+                          "MICROSECONDS",
+                          "MILLISECONDS",
+                          "SECONDS",
+                          "MINUTES",
+                          "HOURS",
+                          "DAYS"
+                        ]
+                      }
+                    }
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "defaultValue": "MILLISECONDS",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 2,
+                    "tabName": "General"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "pollPeriodUnits",
+                  "displayModel": {
+                    "displayName": "Polling Period Time Units"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "Number",
+                    "annotations": {
+                      "classInformation": {
+                        "classname": "java.lang.Integer",
+                        "hasDefaultConstructor": false,
+                        "isInterface": false,
+                        "isInstantiable": false,
+                        "isAbstract": false,
+                        "isFinal": true,
+                        "implementedInterfaces": [
+                          "java.lang.Comparable"
+                        ],
+                        "parent": "java.lang.Number",
+                        "genericTypes": [],
+                        "isMap": false
+                      },
+                      "int": {}
+                    }
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "defaultValue": "500",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 3,
+                    "tabName": "General"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "maxPollRecords",
+                  "displayModel": {
+                    "displayName": "Max Poll records"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "String",
+                    "annotations": {
+                      "typeId": "org.mule.extension.kafka.api.enums.PartitionPollingMode",
+                      "enum": {
+                        "type": "[Ljava.lang.String;",
+                        "values": [
+                          "LATEST",
+                          "ALL_TO_END",
+                          "EARLIEST",
+                          "ALL_TO_BEGINNING"
+                        ]
+                      }
+                    }
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "defaultValue": "EARLIEST",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 4,
+                    "tabName": "General"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "partitionPollingMode",
+                  "displayModel": {
+                    "displayName": "Partition Polling mode"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "Number",
+                    "annotations": {
+                      "classInformation": {
+                        "classname": "java.lang.Integer",
+                        "hasDefaultConstructor": false,
+                        "isInterface": false,
+                        "isInstantiable": false,
+                        "isAbstract": false,
+                        "isFinal": true,
+                        "implementedInterfaces": [
+                          "java.lang.Comparable"
+                        ],
+                        "parent": "java.lang.Number",
+                        "genericTypes": [],
+                        "isMap": false
+                      },
+                      "int": {}
+                    }
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "defaultValue": "1",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 5,
+                    "tabName": "General"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "prefetchPolls",
+                  "displayModel": {
+                    "displayName": "Number of prefetch polls"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                }
+              ],
+              "exclusiveParametersModels": [],
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 3,
+                "tabName": "General"
+              },
+              "showInDsl": true,
+              "name": "Polling Config",
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "parameters": [
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "String",
+                    "annotations": {
+                      "typeId": "org.mule.extension.kafka.api.enums.LoadBalancingPolicy",
+                      "enum": {
+                        "type": "[Ljava.lang.String;",
+                        "values": [
+                          "GREEDY",
+                          "BALANCED"
+                        ]
+                      }
+                    }
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "defaultValue": "BALANCED",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 1,
+                    "tabName": "Load Balancing"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "policy",
+                  "displayModel": {
+                    "displayName": "Balancing Policy"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "Number",
+                    "annotations": {
+                      "classInformation": {
+                        "classname": "java.lang.Long",
+                        "hasDefaultConstructor": false,
+                        "isInterface": false,
+                        "isInstantiable": false,
+                        "isAbstract": false,
+                        "isFinal": true,
+                        "implementedInterfaces": [
+                          "java.lang.Comparable"
+                        ],
+                        "parent": "java.lang.Number",
+                        "genericTypes": [],
+                        "isMap": false
+                      },
+                      "int": {}
+                    }
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "defaultValue": "3000",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 2,
+                    "tabName": "Load Balancing"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "balanceInterval",
+                  "displayModel": {
+                    "displayName": "Balancing Interval"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                },
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "String",
+                    "annotations": {
+                      "typeId": "java.util.concurrent.TimeUnit",
+                      "enum": {
+                        "type": "[Ljava.lang.String;",
+                        "values": [
+                          "NANOSECONDS",
+                          "MICROSECONDS",
+                          "MILLISECONDS",
+                          "SECONDS",
+                          "MINUTES",
+                          "HOURS",
+                          "DAYS"
+                        ]
+                      }
+                    }
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "defaultValue": "MILLISECONDS",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": true,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 3,
+                    "tabName": "Load Balancing"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "balanceIntervalUnit",
+                  "displayModel": {
+                    "displayName": "Balancing Time Unit"
+                  },
+                  "description": "",
+                  "modelProperties": {}
+                }
+              ],
+              "exclusiveParametersModels": [],
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 2,
+                "tabName": "Load Balancing"
+              },
+              "showInDsl": true,
+              "name": "Balancing Settings",
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "parameters": [
+                {
+                  "type": {
+                    "format": "java",
+                    "type": "Union",
+                    "annotations": {
+                      "typeId": "ReconnectionStrategy"
+                    },
+                    "of": [
+                      {
+                        "type": "Object",
+                        "annotations": {
+                          "typeId": "reconnect"
+                        },
+                        "fields": [
+                          {
+                            "key": {
+                              "name": "frequency"
+                            },
+                            "model": {
+                              "type": "Number",
+                              "annotations": {
+                                "int": {},
+                                "classInformation": {
+                                  "classname": "java.lang.Long",
+                                  "hasDefaultConstructor": false,
+                                  "isInterface": false,
+                                  "isInstantiable": false,
+                                  "isAbstract": false,
+                                  "isFinal": true,
+                                  "implementedInterfaces": [
+                                    "java.lang.Comparable"
+                                  ],
+                                  "parent": "java.lang.Number",
+                                  "genericTypes": [],
+                                  "isMap": false
+                                },
+                                "default": "2000"
+                              }
+                            },
+                            "annotations": {
+                              "description": {
+                                "value": "How often (in ms) to reconnect"
+                              }
+                            }
+                          },
+                          {
+                            "key": {
+                              "name": "count"
+                            },
+                            "model": {
+                              "type": "Number",
+                              "annotations": {
+                                "int": {},
+                                "default": "2"
+                              }
+                            },
+                            "annotations": {
+                              "description": {
+                                "value": "How many reconnection attempts to make"
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Object",
+                        "annotations": {
+                          "typeId": "reconnect-forever"
+                        },
+                        "fields": [
+                          {
+                            "key": {
+                              "name": "frequency"
+                            },
+                            "model": {
+                              "type": "Number",
+                              "annotations": {
+                                "int": {},
+                                "classInformation": {
+                                  "classname": "java.lang.Long",
+                                  "hasDefaultConstructor": false,
+                                  "isInterface": false,
+                                  "isInstantiable": false,
+                                  "isAbstract": false,
+                                  "isFinal": true,
+                                  "implementedInterfaces": [
+                                    "java.lang.Comparable"
+                                  ],
+                                  "parent": "java.lang.Number",
+                                  "genericTypes": [],
+                                  "isMap": false
+                                },
+                                "default": "2000"
+                              }
+                            },
+                            "annotations": {
+                              "description": {
+                                "value": "How often (in ms) to reconnect"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "hasDynamicType": false,
+                  "required": false,
+                  "isConfigOverride": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "role": "BEHAVIOUR",
+                  "dslConfiguration": {
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": false,
+                    "allowTopLevelDefinition": false
+                  },
+                  "layoutModel": {
+                    "password": false,
+                    "text": false,
+                    "query": false,
+                    "order": 8,
+                    "tabName": "Advanced"
+                  },
+                  "allowedStereotypeModels": [],
+                  "name": "reconnectionStrategy",
+                  "description": "A retry strategy in case of connectivity errors",
+                  "modelProperties": {
+                    "org.mule.runtime.extension.api.property.QNameModelProperty": {
+                      "value": {
+                        "namespaceURI": "http://www.mulesoft.org/schema/mule/core",
+                        "localPart": "abstract-reconnection-strategy",
+                        "prefix": "mule"
+                      }
+                    },
+                    "org.mule.runtime.extension.api.property.InfrastructureParameterModelProperty": {
+                      "sequence": 3
+                    }
+                  }
+                }
+              ],
+              "exclusiveParametersModels": [],
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 4
+              },
+              "showInDsl": false,
+              "name": "Connection",
+              "description": "",
+              "modelProperties": {}
+            }
+          ],
+          "name": "kafkaListener",
+          "description": "",
+          "modelProperties": {},
+          "kind": "source"
+        }
+      ],
+      "name": "config",
+      "description": "Default configuration",
+      "modelProperties": {}
+    }
+  ],
+  "operations": [],
+  "functions": [],
+  "constructs": [],
+  "connectionProviders": [
+    {
+      "connectionManagementType": "CACHED",
+      "externalLibraryModels": [],
+      "supportsConnectivityTesting": true,
+      "stereotype": {
+        "type": "EVENT-HUB",
+        "namespace": "KAFKA",
+        "parent": {
+          "type": "CONNECTION",
+          "namespace": "MULE"
+        }
+      },
+      "parameterGroupModels": [
+        {
+          "parameters": [
+            {
+              "type": {
+                "format": "java",
+                "type": "Object",
+                "annotations": {
+                  "classInformation": {
+                    "classname": "java.util.Properties",
+                    "hasDefaultConstructor": true,
+                    "isInterface": false,
+                    "isInstantiable": true,
+                    "isAbstract": false,
+                    "isFinal": false,
+                    "implementedInterfaces": [],
+                    "parent": "java.util.Hashtable",
+                    "genericTypes": [],
+                    "isMap": true
+                  }
+                },
+                "open": {
+                  "type": "Object",
+                  "annotations": {
+                    "typeId": "java.lang.Object",
+                    "classInformation": {
+                      "classname": "java.lang.Object",
+                      "hasDefaultConstructor": true,
+                      "isInterface": false,
+                      "isInstantiable": true,
+                      "isAbstract": false,
+                      "isFinal": false,
+                      "implementedInterfaces": [],
+                      "parent": "",
+                      "genericTypes": [],
+                      "isMap": false
+                    },
+                    "typeAlias": {
+                      "value": "Object"
+                    }
+                  },
+                  "fields": []
+                },
+                "fields": []
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 6,
+                "tabName": "Extra"
+              },
+              "allowedStereotypeModels": [],
+              "name": "extraProperties",
+              "displayModel": {
+                "displayName": "Additional properties"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "Boolean",
+                "annotations": {
+                  "typeId": "boolean"
+                }
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "false",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 7,
+                "tabName": "Test"
+              },
+              "allowedStereotypeModels": [],
+              "name": "testModeEnabled",
+              "displayModel": {
+                "displayName": "Test Mode"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": true,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 1,
+                "tabName": "General"
+              },
+              "allowedStereotypeModels": [],
+              "name": "namespaceName",
+              "displayModel": {
+                "displayName": "Event Hub Namespace"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "servicebus.windows.net",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 2,
+                "tabName": "General"
+              },
+              "allowedStereotypeModels": [],
+              "name": "domainName",
+              "displayModel": {
+                "displayName": "Event Hub Domain Name"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": true,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 3,
+                "tabName": "General"
+              },
+              "allowedStereotypeModels": [],
+              "name": "eventHubName",
+              "displayModel": {
+                "displayName": "Event Hub Name"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": true,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 4,
+                "tabName": "General"
+              },
+              "allowedStereotypeModels": [],
+              "name": "sasKeyName",
+              "displayModel": {
+                "displayName": "Shared Access Key Name"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": true,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 5,
+                "tabName": "General"
+              },
+              "allowedStereotypeModels": [],
+              "name": "sasKey",
+              "displayModel": {
+                "displayName": "Shared Access Key"
+              },
+              "description": "",
+              "modelProperties": {}
+            }
+          ],
+          "exclusiveParametersModels": [],
+          "layoutModel": {
+            "password": false,
+            "text": false,
+            "query": false,
+            "order": 1
+          },
+          "showInDsl": false,
+          "name": "General",
+          "description": "",
+          "modelProperties": {}
+        },
+        {
+          "parameters": [
+            {
+              "type": {
+                "format": "java",
+                "type": "Object",
+                "annotations": {
+                  "typeId": "Reconnection"
+                },
+                "fields": [
+                  {
+                    "key": {
+                      "name": "failsDeployment"
+                    },
+                    "model": {
+                      "type": "Boolean",
+                      "annotations": {
+                        "default": "false"
+                      }
+                    },
+                    "annotations": {
+                      "description": {
+                        "value": "When the application is deployed, a connectivity test is performed on all connectors. If set to true, deployment will fail if the test doesn\u0027t pass after exhausting the associated reconnection strategy"
+                      }
+                    }
+                  },
+                  {
+                    "key": {
+                      "name": "reconnectionStrategy"
+                    },
+                    "model": {
+                      "type": "Union",
+                      "annotations": {
+                        "typeId": "ReconnectionStrategy"
+                      },
+                      "of": [
+                        {
+                          "type": "Object",
+                          "annotations": {
+                            "typeId": "reconnect"
+                          },
+                          "fields": [
+                            {
+                              "key": {
+                                "name": "frequency"
+                              },
+                              "model": {
+                                "type": "Number",
+                                "annotations": {
+                                  "int": {},
+                                  "classInformation": {
+                                    "classname": "java.lang.Long",
+                                    "hasDefaultConstructor": false,
+                                    "isInterface": false,
+                                    "isInstantiable": false,
+                                    "isAbstract": false,
+                                    "isFinal": true,
+                                    "implementedInterfaces": [
+                                      "java.lang.Comparable"
+                                    ],
+                                    "parent": "java.lang.Number",
+                                    "genericTypes": [],
+                                    "isMap": false
+                                  },
+                                  "default": "2000"
+                                }
+                              },
+                              "annotations": {
+                                "description": {
+                                  "value": "How often (in ms) to reconnect"
+                                }
+                              }
+                            },
+                            {
+                              "key": {
+                                "name": "count"
+                              },
+                              "model": {
+                                "type": "Number",
+                                "annotations": {
+                                  "int": {},
+                                  "default": "2"
+                                }
+                              },
+                              "annotations": {
+                                "description": {
+                                  "value": "How many reconnection attempts to make"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Object",
+                          "annotations": {
+                            "typeId": "reconnect-forever"
+                          },
+                          "fields": [
+                            {
+                              "key": {
+                                "name": "frequency"
+                              },
+                              "model": {
+                                "type": "Number",
+                                "annotations": {
+                                  "int": {},
+                                  "classInformation": {
+                                    "classname": "java.lang.Long",
+                                    "hasDefaultConstructor": false,
+                                    "isInterface": false,
+                                    "isInstantiable": false,
+                                    "isAbstract": false,
+                                    "isFinal": true,
+                                    "implementedInterfaces": [
+                                      "java.lang.Comparable"
+                                    ],
+                                    "parent": "java.lang.Number",
+                                    "genericTypes": [],
+                                    "isMap": false
+                                  },
+                                  "default": "2000"
+                                }
+                              },
+                              "annotations": {
+                                "description": {
+                                  "value": "How often (in ms) to reconnect"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "annotations": {
+                      "description": {
+                        "value": "The reconnection strategy to use"
+                      }
+                    }
+                  }
+                ]
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "NOT_SUPPORTED",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": false,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 8,
+                "tabName": "Advanced"
+              },
+              "allowedStereotypeModels": [],
+              "name": "reconnection",
+              "description": "When the application is deployed, a connectivity test is performed on all connectors. If set to true, deployment will fail if the test doesn\u0027t pass after exhausting the associated reconnection strategy",
+              "modelProperties": {
+                "org.mule.runtime.extension.api.property.QNameModelProperty": {
+                  "value": {
+                    "namespaceURI": "http://www.mulesoft.org/schema/mule/core",
+                    "localPart": "reconnection",
+                    "prefix": "mule"
+                  }
+                },
+                "org.mule.runtime.extension.api.property.InfrastructureParameterModelProperty": {
+                  "sequence": 3
+                }
+              }
+            }
+          ],
+          "exclusiveParametersModels": [],
+          "layoutModel": {
+            "password": false,
+            "text": false,
+            "query": false,
+            "order": 2
+          },
+          "showInDsl": false,
+          "name": "Connection",
+          "description": "",
+          "modelProperties": {}
+        }
+      ],
+      "name": "event-hub",
+      "displayModel": {
+        "displayName": "Azure Event Hub Connection"
+      },
+      "description": "",
+      "modelProperties": {}
+    },
+    {
+      "connectionManagementType": "CACHED",
+      "externalLibraryModels": [],
+      "supportsConnectivityTesting": true,
+      "stereotype": {
+        "type": "KAFKA",
+        "namespace": "KAFKA",
+        "parent": {
+          "type": "CONNECTION",
+          "namespace": "MULE"
+        }
+      },
+      "parameterGroupModels": [
+        {
+          "parameters": [
+            {
+              "type": {
+                "format": "java",
+                "type": "Object",
+                "annotations": {
+                  "classInformation": {
+                    "classname": "java.util.Properties",
+                    "hasDefaultConstructor": true,
+                    "isInterface": false,
+                    "isInstantiable": true,
+                    "isAbstract": false,
+                    "isFinal": false,
+                    "implementedInterfaces": [],
+                    "parent": "java.util.Hashtable",
+                    "genericTypes": [],
+                    "isMap": true
+                  }
+                },
+                "open": {
+                  "type": "Object",
+                  "annotations": {
+                    "typeId": "java.lang.Object",
+                    "classInformation": {
+                      "classname": "java.lang.Object",
+                      "hasDefaultConstructor": true,
+                      "isInterface": false,
+                      "isInstantiable": true,
+                      "isAbstract": false,
+                      "isFinal": false,
+                      "implementedInterfaces": [],
+                      "parent": "",
+                      "genericTypes": [],
+                      "isMap": false
+                    },
+                    "typeAlias": {
+                      "value": "Object"
+                    }
+                  },
+                  "fields": []
+                },
+                "fields": []
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 3,
+                "tabName": "Extra"
+              },
+              "allowedStereotypeModels": [],
+              "name": "extraProperties",
+              "displayModel": {
+                "displayName": "Additional properties"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "Boolean",
+                "annotations": {
+                  "typeId": "boolean"
+                }
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "false",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 4,
+                "tabName": "Test"
+              },
+              "allowedStereotypeModels": [],
+              "name": "testModeEnabled",
+              "displayModel": {
+                "displayName": "Test Mode"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": true,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 1,
+                "tabName": "General"
+              },
+              "allowedStereotypeModels": [],
+              "name": "bootstrapServers",
+              "displayModel": {
+                "displayName": "Bootstrap Server",
+                "example": "localhost:9092"
+              },
+              "description": "",
+              "modelProperties": {}
+            }
+          ],
+          "exclusiveParametersModels": [],
+          "layoutModel": {
+            "password": false,
+            "text": false,
+            "query": false,
+            "order": 1
+          },
+          "showInDsl": false,
+          "name": "General",
+          "description": "",
+          "modelProperties": {}
+        },
+        {
+          "parameters": [
+            {
+              "type": {
+                "format": "java",
+                "type": "String",
+                "annotations": {
+                  "typeId": "org.mule.extension.kafka.api.enums.SecurityProtocol",
+                  "enum": {
+                    "type": "[Ljava.lang.String;",
+                    "values": [
+                      "SSL",
+                      "PLAINTEXT",
+                      "SASL_SSL",
+                      "SASL_PLAINTEXT"
+                    ]
+                  }
+                }
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "PLAINTEXT",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 1,
+                "tabName": "General"
+              },
+              "allowedStereotypeModels": [],
+              "name": "securityProtocol",
+              "displayModel": {
+                "displayName": "Security Protocol"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "@ref:org.mule.extension.kafka.internal.auth.sasl.SASLAuthMethod"
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "NOT_SUPPORTED",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": false,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 2,
+                "tabName": "General"
+              },
+              "allowedStereotypeModels": [],
+              "name": "saslAuthMethod",
+              "displayModel": {
+                "displayName": "Authorization Method"
+              },
+              "description": "",
+              "modelProperties": {}
+            }
+          ],
+          "exclusiveParametersModels": [],
+          "layoutModel": {
+            "password": false,
+            "text": false,
+            "query": false,
+            "order": 2
+          },
+          "showInDsl": true,
+          "name": "Kafka Security",
+          "description": "",
+          "modelProperties": {}
+        },
+        {
+          "parameters": [
+            {
+              "type": {
+                "format": "java",
+                "type": "Object",
+                "annotations": {
+                  "typeId": "Reconnection"
+                },
+                "fields": [
+                  {
+                    "key": {
+                      "name": "failsDeployment"
+                    },
+                    "model": {
+                      "type": "Boolean",
+                      "annotations": {
+                        "default": "false"
+                      }
+                    },
+                    "annotations": {
+                      "description": {
+                        "value": "When the application is deployed, a connectivity test is performed on all connectors. If set to true, deployment will fail if the test doesn\u0027t pass after exhausting the associated reconnection strategy"
+                      }
+                    }
+                  },
+                  {
+                    "key": {
+                      "name": "reconnectionStrategy"
+                    },
+                    "model": {
+                      "type": "Union",
+                      "annotations": {
+                        "typeId": "ReconnectionStrategy"
+                      },
+                      "of": [
+                        {
+                          "type": "Object",
+                          "annotations": {
+                            "typeId": "reconnect"
+                          },
+                          "fields": [
+                            {
+                              "key": {
+                                "name": "frequency"
+                              },
+                              "model": {
+                                "type": "Number",
+                                "annotations": {
+                                  "int": {},
+                                  "classInformation": {
+                                    "classname": "java.lang.Long",
+                                    "hasDefaultConstructor": false,
+                                    "isInterface": false,
+                                    "isInstantiable": false,
+                                    "isAbstract": false,
+                                    "isFinal": true,
+                                    "implementedInterfaces": [
+                                      "java.lang.Comparable"
+                                    ],
+                                    "parent": "java.lang.Number",
+                                    "genericTypes": [],
+                                    "isMap": false
+                                  },
+                                  "default": "2000"
+                                }
+                              },
+                              "annotations": {
+                                "description": {
+                                  "value": "How often (in ms) to reconnect"
+                                }
+                              }
+                            },
+                            {
+                              "key": {
+                                "name": "count"
+                              },
+                              "model": {
+                                "type": "Number",
+                                "annotations": {
+                                  "int": {},
+                                  "default": "2"
+                                }
+                              },
+                              "annotations": {
+                                "description": {
+                                  "value": "How many reconnection attempts to make"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Object",
+                          "annotations": {
+                            "typeId": "reconnect-forever"
+                          },
+                          "fields": [
+                            {
+                              "key": {
+                                "name": "frequency"
+                              },
+                              "model": {
+                                "type": "Number",
+                                "annotations": {
+                                  "int": {},
+                                  "classInformation": {
+                                    "classname": "java.lang.Long",
+                                    "hasDefaultConstructor": false,
+                                    "isInterface": false,
+                                    "isInstantiable": false,
+                                    "isAbstract": false,
+                                    "isFinal": true,
+                                    "implementedInterfaces": [
+                                      "java.lang.Comparable"
+                                    ],
+                                    "parent": "java.lang.Number",
+                                    "genericTypes": [],
+                                    "isMap": false
+                                  },
+                                  "default": "2000"
+                                }
+                              },
+                              "annotations": {
+                                "description": {
+                                  "value": "How often (in ms) to reconnect"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "annotations": {
+                      "description": {
+                        "value": "The reconnection strategy to use"
+                      }
+                    }
+                  }
+                ]
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "NOT_SUPPORTED",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": false,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 5,
+                "tabName": "Advanced"
+              },
+              "allowedStereotypeModels": [],
+              "name": "reconnection",
+              "description": "When the application is deployed, a connectivity test is performed on all connectors. If set to true, deployment will fail if the test doesn\u0027t pass after exhausting the associated reconnection strategy",
+              "modelProperties": {
+                "org.mule.runtime.extension.api.property.QNameModelProperty": {
+                  "value": {
+                    "namespaceURI": "http://www.mulesoft.org/schema/mule/core",
+                    "localPart": "reconnection",
+                    "prefix": "mule"
+                  }
+                },
+                "org.mule.runtime.extension.api.property.InfrastructureParameterModelProperty": {
+                  "sequence": 3
+                }
+              }
+            }
+          ],
+          "exclusiveParametersModels": [],
+          "layoutModel": {
+            "password": false,
+            "text": false,
+            "query": false,
+            "order": 3
+          },
+          "showInDsl": false,
+          "name": "Connection",
+          "description": "",
+          "modelProperties": {}
+        }
+      ],
+      "name": "kafka",
+      "displayModel": {
+        "displayName": "Kafka Connection"
+      },
+      "description": "",
+      "modelProperties": {}
+    }
+  ],
+  "messageSources": [],
+  "notifications": [],
+  "errors": [
+    {
+      "error": "KAFKA:RETRY_EXHAUSTED",
+      "parent": "MULE:RETRY_EXHAUSTED",
+      "handleable": true
+    },
+    {
+      "error": "MULE:RETRY_EXHAUSTED",
+      "parent": "MULE:ANY",
+      "handleable": true
+    },
+    {
+      "error": "MULE:ANY",
+      "handleable": true
+    },
+    {
+      "error": "KAFKA:CONNECTIVITY",
+      "parent": "MULE:CONNECTIVITY",
+      "handleable": true
+    },
+    {
+      "error": "MULE:CONNECTIVITY",
+      "parent": "MULE:ANY",
+      "handleable": true
+    },
+    {
+      "error": "KAFKA:LISTENER_CHILD_TERMINATED",
+      "parent": "MULE:ANY",
+      "handleable": true
+    },
+    {
+      "error": "KAFKA:BROKER_CONNECTION_FAILED",
+      "parent": "MULE:ANY",
+      "handleable": true
+    }
+  ],
+  "modelProperties": {},
+  "types": [
+    {
+      "format": "java",
+      "type": "Object",
+      "annotations": {
+        "typeId": "org.mule.extension.kafka.api.attributes.KafkaEventAttributes",
+        "classInformation": {
+          "classname": "org.mule.extension.kafka.api.attributes.KafkaEventAttributes",
+          "hasDefaultConstructor": true,
+          "isInterface": false,
+          "isInstantiable": true,
+          "isAbstract": false,
+          "isFinal": false,
+          "implementedInterfaces": [],
+          "parent": "",
+          "genericTypes": [],
+          "isMap": false
+        },
+        "typeAlias": {
+          "value": "KafkaEventAttributes"
+        }
+      },
+      "fields": [
+        {
+          "key": {
+            "name": "key",
+            "required": "true"
+          },
+          "model": {
+            "type": "String"
+          },
+          "annotations": {
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 1,
+                "tabName": "General"
+              }
+            }
+          }
+        },
+        {
+          "key": {
+            "name": "topicName",
+            "required": "true"
+          },
+          "model": {
+            "type": "String"
+          },
+          "annotations": {
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 2,
+                "tabName": "General"
+              }
+            }
+          }
+        },
+        {
+          "key": {
+            "name": "partitionID",
+            "required": "true"
+          },
+          "model": {
+            "type": "Number",
+            "annotations": {
+              "classInformation": {
+                "classname": "java.lang.Integer",
+                "hasDefaultConstructor": false,
+                "isInterface": false,
+                "isInstantiable": false,
+                "isAbstract": false,
+                "isFinal": true,
+                "implementedInterfaces": [
+                  "java.lang.Comparable"
+                ],
+                "parent": "java.lang.Number",
+                "genericTypes": [],
+                "isMap": false
+              },
+              "int": {}
+            }
+          },
+          "annotations": {
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 3,
+                "tabName": "General"
+              }
+            }
+          }
+        },
+        {
+          "key": {
+            "name": "messageID",
+            "required": "true"
+          },
+          "model": {
+            "type": "String"
+          },
+          "annotations": {
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 4,
+                "tabName": "General"
+              }
+            }
+          }
+        },
+        {
+          "key": {
+            "name": "sequenceNumber",
+            "required": "true"
+          },
+          "model": {
+            "type": "Number",
+            "annotations": {
+              "classInformation": {
+                "classname": "java.lang.Long",
+                "hasDefaultConstructor": false,
+                "isInterface": false,
+                "isInstantiable": false,
+                "isAbstract": false,
+                "isFinal": true,
+                "implementedInterfaces": [
+                  "java.lang.Comparable"
+                ],
+                "parent": "java.lang.Number",
+                "genericTypes": [],
+                "isMap": false
+              },
+              "int": {}
+            }
+          },
+          "annotations": {
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 5,
+                "tabName": "General"
+              }
+            }
+          }
+        },
+        {
+          "key": {
+            "name": "enqueuedTime",
+            "required": "true"
+          },
+          "model": {
+            "type": "Number",
+            "annotations": {
+              "classInformation": {
+                "classname": "java.lang.Long",
+                "hasDefaultConstructor": false,
+                "isInterface": false,
+                "isInstantiable": false,
+                "isAbstract": false,
+                "isFinal": true,
+                "implementedInterfaces": [
+                  "java.lang.Comparable"
+                ],
+                "parent": "java.lang.Number",
+                "genericTypes": [],
+                "isMap": false
+              },
+              "int": {}
+            }
+          },
+          "annotations": {
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 6,
+                "tabName": "General"
+              }
+            }
+          }
+        },
+        {
+          "key": {
+            "name": "bootstrapServers",
+            "required": "true"
+          },
+          "model": {
+            "type": "String"
+          },
+          "annotations": {
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 7,
+                "tabName": "General"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "format": "java",
+      "type": "Object",
+      "annotations": {
+        "typeId": "org.mule.extension.kafka.internal.ack.policy.FailBackPolicy",
+        "classInformation": {
+          "classname": "org.mule.extension.kafka.internal.ack.policy.FailBackPolicy",
+          "hasDefaultConstructor": false,
+          "isInterface": true,
+          "isInstantiable": false,
+          "isAbstract": true,
+          "isFinal": false,
+          "implementedInterfaces": [
+            "java.util.concurrent.Callable"
+          ],
+          "parent": "",
+          "genericTypes": [],
+          "isMap": false
+        },
+        "typeAlias": {
+          "value": "FailBackPolicy"
+        }
+      },
+      "fields": []
+    },
+    {
+      "format": "java",
+      "type": "Object",
+      "annotations": {
+        "typeId": "org.mule.extension.kafka.internal.ack.policy.FixedRetry",
+        "classInformation": {
+          "classname": "org.mule.extension.kafka.internal.ack.policy.FixedRetry",
+          "hasDefaultConstructor": true,
+          "isInterface": false,
+          "isInstantiable": true,
+          "isAbstract": false,
+          "isFinal": false,
+          "implementedInterfaces": [],
+          "parent": "org.mule.extension.kafka.internal.ack.policy.AbstractFailBackPolicy",
+          "genericTypes": [],
+          "isMap": false
+        },
+        "typeAlias": {
+          "value": "FixedRetry"
+        }
+      },
+      "fields": [
+        {
+          "key": {
+            "name": "retryCount"
+          },
+          "model": {
+            "type": "Number",
+            "annotations": {
+              "classInformation": {
+                "classname": "java.lang.Integer",
+                "hasDefaultConstructor": false,
+                "isInterface": false,
+                "isInstantiable": false,
+                "isAbstract": false,
+                "isFinal": true,
+                "implementedInterfaces": [
+                  "java.lang.Comparable"
+                ],
+                "parent": "java.lang.Number",
+                "genericTypes": [],
+                "isMap": false
+              },
+              "int": {}
+            }
+          },
+          "annotations": {
+            "default": "3",
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "tabName": "General"
+              }
+            },
+            "display": {
+              "displayModel": {
+                "displayName": "Count of retries"
+              }
+            }
+          }
+        },
+        {
+          "key": {
+            "name": "delay"
+          },
+          "model": {
+            "type": "Number",
+            "annotations": {
+              "classInformation": {
+                "classname": "java.lang.Long",
+                "hasDefaultConstructor": false,
+                "isInterface": false,
+                "isInstantiable": false,
+                "isAbstract": false,
+                "isFinal": true,
+                "implementedInterfaces": [
+                  "java.lang.Comparable"
+                ],
+                "parent": "java.lang.Number",
+                "genericTypes": [],
+                "isMap": false
+              },
+              "int": {}
+            }
+          },
+          "annotations": {
+            "default": "3000",
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 1,
+                "tabName": "General"
+              }
+            },
+            "display": {
+              "displayModel": {
+                "displayName": "Delay between ack retry"
+              }
+            }
+          }
+        },
+        {
+          "key": {
+            "name": "delayUnit"
+          },
+          "model": {
+            "type": "String",
+            "annotations": {
+              "typeId": "java.util.concurrent.TimeUnit",
+              "enum": {
+                "type": "[Ljava.lang.String;",
+                "values": [
+                  "NANOSECONDS",
+                  "MICROSECONDS",
+                  "MILLISECONDS",
+                  "SECONDS",
+                  "MINUTES",
+                  "HOURS",
+                  "DAYS"
+                ]
+              }
+            }
+          },
+          "annotations": {
+            "default": "MILLISECONDS",
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 2,
+                "tabName": "General"
+              }
+            },
+            "display": {
+              "displayModel": {
+                "displayName": "Delay Time Unit"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "format": "java",
+      "type": "Object",
+      "annotations": {
+        "typeId": "org.mule.extension.kafka.internal.ack.policy.ForeverRetry",
+        "classInformation": {
+          "classname": "org.mule.extension.kafka.internal.ack.policy.ForeverRetry",
+          "hasDefaultConstructor": true,
+          "isInterface": false,
+          "isInstantiable": true,
+          "isAbstract": false,
+          "isFinal": false,
+          "implementedInterfaces": [],
+          "parent": "org.mule.extension.kafka.internal.ack.policy.AbstractFailBackPolicy",
+          "genericTypes": [],
+          "isMap": false
+        },
+        "typeAlias": {
+          "value": "ForeverRetry"
+        }
+      },
+      "fields": [
+        {
+          "key": {
+            "name": "delay"
+          },
+          "model": {
+            "type": "Number",
+            "annotations": {
+              "classInformation": {
+                "classname": "java.lang.Long",
+                "hasDefaultConstructor": false,
+                "isInterface": false,
+                "isInstantiable": false,
+                "isAbstract": false,
+                "isFinal": true,
+                "implementedInterfaces": [
+                  "java.lang.Comparable"
+                ],
+                "parent": "java.lang.Number",
+                "genericTypes": [],
+                "isMap": false
+              },
+              "int": {}
+            }
+          },
+          "annotations": {
+            "default": "3000",
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 1,
+                "tabName": "General"
+              }
+            },
+            "display": {
+              "displayModel": {
+                "displayName": "Delay between ack retry"
+              }
+            }
+          }
+        },
+        {
+          "key": {
+            "name": "delayUnit"
+          },
+          "model": {
+            "type": "String",
+            "annotations": {
+              "typeId": "java.util.concurrent.TimeUnit",
+              "enum": {
+                "type": "[Ljava.lang.String;",
+                "values": [
+                  "NANOSECONDS",
+                  "MICROSECONDS",
+                  "MILLISECONDS",
+                  "SECONDS",
+                  "MINUTES",
+                  "HOURS",
+                  "DAYS"
+                ]
+              }
+            }
+          },
+          "annotations": {
+            "default": "MILLISECONDS",
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 2,
+                "tabName": "General"
+              }
+            },
+            "display": {
+              "displayModel": {
+                "displayName": "Delay Time Unit"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "format": "java",
+      "type": "Object",
+      "annotations": {
+        "typeId": "org.mule.extension.kafka.internal.auth.sasl.JAASMethod",
+        "classInformation": {
+          "classname": "org.mule.extension.kafka.internal.auth.sasl.JAASMethod",
+          "hasDefaultConstructor": true,
+          "isInterface": false,
+          "isInstantiable": true,
+          "isAbstract": false,
+          "isFinal": false,
+          "implementedInterfaces": [
+            "org.mule.extension.kafka.internal.auth.sasl.SASLAuthMethod"
+          ],
+          "parent": "",
+          "genericTypes": [],
+          "isMap": false
+        },
+        "typeAlias": {
+          "value": "sasl-jaas-auth-method"
+        }
+      },
+      "fields": [
+        {
+          "key": {
+            "name": "saslMechanism"
+          },
+          "model": {
+            "type": "String",
+            "annotations": {
+              "typeId": "org.mule.extension.kafka.api.enums.SASLMechanism",
+              "enum": {
+                "type": "[Ljava.lang.String;",
+                "values": [
+                  "PLAIN",
+                  "GSSAPI",
+                  "OAUTHBEARER",
+                  "SCRAM"
+                ]
+              }
+            }
+          },
+          "annotations": {
+            "default": "PLAIN",
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 1,
+                "tabName": "General"
+              }
+            },
+            "display": {
+              "displayModel": {
+                "displayName": "SASL Mechanism"
+              }
+            }
+          }
+        },
+        {
+          "key": {
+            "name": "jaasConfig",
+            "required": "true"
+          },
+          "model": {
+            "type": "String"
+          },
+          "annotations": {
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": true,
+                "query": false,
+                "order": 2,
+                "tabName": "General"
+              }
+            },
+            "display": {
+              "displayModel": {
+                "displayName": "JAAS Config"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "format": "java",
+      "type": "Object",
+      "annotations": {
+        "typeId": "org.mule.extension.kafka.internal.auth.sasl.PLAINMethod",
+        "classInformation": {
+          "classname": "org.mule.extension.kafka.internal.auth.sasl.PLAINMethod",
+          "hasDefaultConstructor": true,
+          "isInterface": false,
+          "isInstantiable": true,
+          "isAbstract": false,
+          "isFinal": false,
+          "implementedInterfaces": [
+            "org.mule.extension.kafka.internal.auth.sasl.SASLAuthMethod"
+          ],
+          "parent": "",
+          "genericTypes": [],
+          "isMap": false
+        },
+        "typeAlias": {
+          "value": "sasl-plain-auth-method"
+        }
+      },
+      "fields": [
+        {
+          "key": {
+            "name": "username",
+            "required": "true"
+          },
+          "model": {
+            "type": "String"
+          },
+          "annotations": {
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 1,
+                "tabName": "General"
+              }
+            },
+            "display": {
+              "displayModel": {
+                "displayName": "Username"
+              }
+            }
+          }
+        },
+        {
+          "key": {
+            "name": "password",
+            "required": "true"
+          },
+          "model": {
+            "type": "String"
+          },
+          "annotations": {
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": true,
+                "text": false,
+                "query": false,
+                "order": 2,
+                "tabName": "General"
+              }
+            },
+            "display": {
+              "displayModel": {
+                "displayName": "Password"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "format": "java",
+      "type": "Object",
+      "annotations": {
+        "typeId": "org.mule.extension.kafka.internal.auth.sasl.SASLAuthMethod",
+        "classInformation": {
+          "classname": "org.mule.extension.kafka.internal.auth.sasl.SASLAuthMethod",
+          "hasDefaultConstructor": false,
+          "isInterface": true,
+          "isInstantiable": false,
+          "isAbstract": true,
+          "isFinal": false,
+          "implementedInterfaces": [],
+          "parent": "",
+          "genericTypes": [],
+          "isMap": false
+        },
+        "typeAlias": {
+          "value": "SASLAuthMethod"
+        }
+      },
+      "fields": []
+    },
+    {
+      "format": "java",
+      "type": "Object",
+      "annotations": {
+        "typeId": "org.mule.extension.kafka.internal.storage.OffsetsStorage",
+        "classInformation": {
+          "classname": "org.mule.extension.kafka.internal.storage.OffsetsStorage",
+          "hasDefaultConstructor": false,
+          "isInterface": true,
+          "isInstantiable": false,
+          "isAbstract": true,
+          "isFinal": false,
+          "implementedInterfaces": [],
+          "parent": "",
+          "genericTypes": [],
+          "isMap": false
+        },
+        "typeAlias": {
+          "value": "OffsetsStorage"
+        }
+      },
+      "fields": []
+    },
+    {
+      "format": "java",
+      "type": "Object",
+      "annotations": {
+        "typeId": "org.mule.extension.kafka.internal.storage.azure.AzureEventHubStorage",
+        "classInformation": {
+          "classname": "org.mule.extension.kafka.internal.storage.azure.AzureEventHubStorage",
+          "hasDefaultConstructor": true,
+          "isInterface": false,
+          "isInstantiable": true,
+          "isAbstract": false,
+          "isFinal": false,
+          "implementedInterfaces": [
+            "org.mule.runtime.api.lifecycle.Initialisable"
+          ],
+          "parent": "org.mule.extension.kafka.internal.storage.AbstractOffsetStorage",
+          "genericTypes": [],
+          "isMap": false
+        },
+        "typeAlias": {
+          "value": "azure-event-hub-storage"
+        }
+      },
+      "fields": [
+        {
+          "key": {
+            "name": "endpointProtocol"
+          },
+          "model": {
+            "type": "String"
+          },
+          "annotations": {
+            "default": "https",
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 1,
+                "tabName": "General"
+              }
+            },
+            "display": {
+              "displayModel": {
+                "displayName": "Endpoints Protocol"
+              }
+            }
+          }
+        },
+        {
+          "key": {
+            "name": "endpointSuffix",
+            "required": "true"
+          },
+          "model": {
+            "type": "String"
+          },
+          "annotations": {
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 2,
+                "tabName": "General"
+              }
+            },
+            "display": {
+              "displayModel": {
+                "displayName": "Endpoint Suffix"
+              }
+            }
+          }
+        },
+        {
+          "key": {
+            "name": "accountName",
+            "required": "true"
+          },
+          "model": {
+            "type": "String"
+          },
+          "annotations": {
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 3,
+                "tabName": "General"
+              }
+            },
+            "display": {
+              "displayModel": {
+                "displayName": "Account Name"
+              }
+            }
+          }
+        },
+        {
+          "key": {
+            "name": "accountKey",
+            "required": "true"
+          },
+          "model": {
+            "type": "String"
+          },
+          "annotations": {
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 4,
+                "tabName": "General"
+              }
+            },
+            "display": {
+              "displayModel": {
+                "displayName": "Account Key"
+              }
+            }
+          }
+        },
+        {
+          "key": {
+            "name": "containerName",
+            "required": "true"
+          },
+          "model": {
+            "type": "String"
+          },
+          "annotations": {
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 5,
+                "tabName": "General"
+              }
+            },
+            "display": {
+              "displayModel": {
+                "displayName": "Container Name"
+              }
+            }
+          }
+        },
+        {
+          "key": {
+            "name": "consumerGroup"
+          },
+          "model": {
+            "type": "String"
+          },
+          "annotations": {
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 6,
+                "tabName": "General"
+              }
+            },
+            "display": {
+              "displayModel": {
+                "displayName": "Consumer Group"
+              }
+            }
+          }
+        },
+        {
+          "key": {
+            "name": "topicName"
+          },
+          "model": {
+            "type": "String"
+          },
+          "annotations": {
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 7,
+                "tabName": "General"
+              }
+            },
+            "display": {
+              "displayModel": {
+                "displayName": "Topic Name"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "format": "java",
+      "type": "Object",
+      "annotations": {
+        "typeId": "org.mule.extension.kafka.internal.storage.custom.CustomStorage",
+        "classInformation": {
+          "classname": "org.mule.extension.kafka.internal.storage.custom.CustomStorage",
+          "hasDefaultConstructor": true,
+          "isInterface": false,
+          "isInstantiable": true,
+          "isAbstract": false,
+          "isFinal": false,
+          "implementedInterfaces": [],
+          "parent": "org.mule.extension.kafka.internal.storage.AbstractOffsetStorage",
+          "genericTypes": [],
+          "isMap": false
+        },
+        "typeAlias": {
+          "value": "custom-storage"
+        }
+      },
+      "fields": [
+        {
+          "key": {
+            "name": "checkpoints"
+          },
+          "model": {
+            "type": "Array",
+            "annotations": {
+              "classInformation": {
+                "classname": "java.util.List",
+                "hasDefaultConstructor": false,
+                "isInterface": true,
+                "isInstantiable": false,
+                "isAbstract": true,
+                "isFinal": false,
+                "implementedInterfaces": [
+                  "java.util.Collection"
+                ],
+                "parent": "",
+                "genericTypes": [
+                  "org.mule.extension.kafka.internal.ack.KafkaCheckpoint"
+                ],
+                "isMap": false
+              }
+            },
+            "item": {
+              "type": "Object",
+              "annotations": {
+                "typeId": "org.mule.extension.kafka.internal.ack.KafkaCheckpoint",
+                "classInformation": {
+                  "classname": "org.mule.extension.kafka.internal.ack.KafkaCheckpoint",
+                  "hasDefaultConstructor": true,
+                  "isInterface": false,
+                  "isInstantiable": true,
+                  "isAbstract": false,
+                  "isFinal": false,
+                  "implementedInterfaces": [],
+                  "parent": "",
+                  "genericTypes": [],
+                  "isMap": false
+                },
+                "typeAlias": {
+                  "value": "KafkaCheckpoint"
+                }
+              },
+              "fields": [
+                {
+                  "key": {
+                    "name": "partitionId",
+                    "required": "true"
+                  },
+                  "model": {
+                    "type": "Number",
+                    "annotations": {
+                      "classInformation": {
+                        "classname": "java.lang.Integer",
+                        "hasDefaultConstructor": false,
+                        "isInterface": false,
+                        "isInstantiable": false,
+                        "isAbstract": false,
+                        "isFinal": true,
+                        "implementedInterfaces": [
+                          "java.lang.Comparable"
+                        ],
+                        "parent": "java.lang.Number",
+                        "genericTypes": [],
+                        "isMap": false
+                      },
+                      "int": {}
+                    }
+                  },
+                  "annotations": {
+                    "expressionSupport": {
+                      "value": "SUPPORTED"
+                    },
+                    "layout": {
+                      "layoutModel": {
+                        "password": false,
+                        "text": false,
+                        "query": false,
+                        "order": 1,
+                        "tabName": "General"
+                      }
+                    },
+                    "display": {
+                      "displayModel": {
+                        "displayName": "Partition"
+                      }
+                    }
+                  }
+                },
+                {
+                  "key": {
+                    "name": "offset",
+                    "required": "true"
+                  },
+                  "model": {
+                    "type": "Number",
+                    "annotations": {
+                      "classInformation": {
+                        "classname": "java.lang.Long",
+                        "hasDefaultConstructor": false,
+                        "isInterface": false,
+                        "isInstantiable": false,
+                        "isAbstract": false,
+                        "isFinal": true,
+                        "implementedInterfaces": [
+                          "java.lang.Comparable"
+                        ],
+                        "parent": "java.lang.Number",
+                        "genericTypes": [],
+                        "isMap": false
+                      },
+                      "int": {}
+                    }
+                  },
+                  "annotations": {
+                    "expressionSupport": {
+                      "value": "SUPPORTED"
+                    },
+                    "layout": {
+                      "layoutModel": {
+                        "password": false,
+                        "text": false,
+                        "query": false,
+                        "order": 2,
+                        "tabName": "General"
+                      }
+                    },
+                    "display": {
+                      "displayModel": {
+                        "displayName": "Offset"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "annotations": {
+            "expressionSupport": {
+              "value": "SUPPORTED"
+            },
+            "layout": {
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 1,
+                "tabName": "General"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "format": "java",
+      "type": "Object",
+      "annotations": {
+        "typeId": "org.mule.extension.kafka.internal.storage.standard.StandardKafkaStorage",
+        "classInformation": {
+          "classname": "org.mule.extension.kafka.internal.storage.standard.StandardKafkaStorage",
+          "hasDefaultConstructor": true,
+          "isInterface": false,
+          "isInstantiable": true,
+          "isAbstract": false,
+          "isFinal": false,
+          "implementedInterfaces": [
+            "org.mule.runtime.api.lifecycle.Initialisable"
+          ],
+          "parent": "org.mule.extension.kafka.internal.storage.AbstractOffsetStorage",
+          "genericTypes": [],
+          "isMap": false
+        },
+        "typeAlias": {
+          "value": "standard-kafka-storage"
+        }
+      },
+      "fields": []
+    }
+  ]
+}

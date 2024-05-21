@@ -1,0 +1,420 @@
+{
+	"info": {
+		"_postman_id": "2853b21d-bb63-47a6-b73f-6fd31a433c9f",
+		"name": "GeoTab System App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34377420"
+	},
+	"item": [
+		{
+			"name": "Driver",
+			"item": [
+				{
+					"name": "Get Driver ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{domain}}:8084/api/v1/drivers/TEST DRIVER",
+							"protocol": "https",
+							"host": [
+								"{{domain}}"
+							],
+							"port": "8084",
+							"path": [
+								"api",
+								"v1",
+								"drivers",
+								"TEST DRIVER"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Driver Change",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Transaction-Id",
+								"value": "51a506f3-fbbc-4305-bf7d-87f6d974589e"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\": \"TEST DRIVER1\",\r\n    \"order\": \"1171366\",\r\n    \"customerName\": \"MULE TEST CUSTOMER\",\r\n    \"commodityCode\": \"22\",\r\n    \"trailer\": \"Mulesoft Test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{domain}}:8084/api/v1/drivers",
+							"protocol": "https",
+							"host": [
+								"{{domain}}"
+							],
+							"port": "8084",
+							"path": [
+								"api",
+								"v1",
+								"drivers"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Device",
+			"item": [
+				{
+					"name": "Get Vehicle Device ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{domain}}:8084/api/v1/devices/vehicles/b9",
+							"protocol": "https",
+							"host": [
+								"{{domain}}"
+							],
+							"port": "8084",
+							"path": [
+								"api",
+								"v1",
+								"devices",
+								"vehicles",
+								"b9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Trailer Device ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{domain}}:8084/api/v1/devices/trailers/Mulesoft Test",
+							"protocol": "https",
+							"host": [
+								"{{domain}}"
+							],
+							"port": "8084",
+							"path": [
+								"api",
+								"v1",
+								"devices",
+								"trailers",
+								"Mulesoft Test"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Shipment Logs",
+			"item": [
+				{
+					"name": "Get Shipment Logs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{domain}}:8084/api/v1/shipment-logs?driverId",
+							"protocol": "https",
+							"host": [
+								"{{domain}}"
+							],
+							"port": "8084",
+							"path": [
+								"api",
+								"v1",
+								"shipment-logs"
+							],
+							"query": [
+								{
+									"key": "driverId",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Shipment Log",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dateTime\": \"2023-08-01T22:22:33.712Z\",\r\n    \"driver\": {\r\n        \"id\": \"b9\"\r\n    },\r\n    \"device\": {\r\n        \"id\": \"b1\"\r\n    },\r\n    \"activeFrom\": \"2023-08-01T22:22:33.712Z\",\r\n    \"activeTo\": \"2050-01-01T00:00:00.000Z\",\r\n    \"shipperName\": \"Prestage Foods\",\r\n    \"documentNumber\": \"1171368\",\r\n    \"commodity\": \"20\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{domain}}:8084/api/v1/shipment-logs",
+							"protocol": "https",
+							"host": [
+								"{{domain}}"
+							],
+							"port": "8084",
+							"path": [
+								"api",
+								"v1",
+								"shipment-logs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Shipment Logs",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"device\": {\r\n\t\t\"id\": \"b1\"\r\n\t},\r\n\t\"activeFrom\": \"2023-08-01T22:22:33.712Z\",\r\n\t\"activeTo\": \"2024-05-07T18:10:35.476Z\",\r\n\t\"commodity\": \"21\",\r\n\t\"documentNumber\": \"1171366\",\r\n\t\"shipperName\": \"Prestage Foods\",\r\n\t\"dateTime\": \"2023-08-01T22:22:33.712Z\",\r\n\t\"driver\": {\r\n\t\t\"id\": \"b9\"\r\n\t},\r\n\t\"version\": \"0000000000000005\",\r\n\t\"id\": \"aCbAmMHPomUiAwJ6bG35XDg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{domain}}:8084/api/v1/shipment-logs",
+							"protocol": "https",
+							"host": [
+								"{{domain}}"
+							],
+							"port": "8084",
+							"path": [
+								"api",
+								"v1",
+								"shipment-logs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Shipment Logs",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://{{domain}}:8084/api/v1/shipment-logs/aCbAmMHPomUiAwJ6bG35XDg",
+							"protocol": "https",
+							"host": [
+								"{{domain}}"
+							],
+							"port": "8084",
+							"path": [
+								"api",
+								"v1",
+								"shipment-logs",
+								"aCbAmMHPomUiAwJ6bG35XDg"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Trailer Attachments",
+			"item": [
+				{
+					"name": "Get Trailer Attachments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{domain}}:8084/api/v1/trailer-attachments?deviceId",
+							"protocol": "https",
+							"host": [
+								"{{domain}}"
+							],
+							"port": "8084",
+							"path": [
+								"api",
+								"v1",
+								"trailer-attachments"
+							],
+							"query": [
+								{
+									"key": "deviceId",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Trailer Attachments",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"activeFrom\": \"2023-08-04T00:00:00.000Z\",\r\n    \"activeTo\": \"2050-01-01T00:00:00.000Z\",\r\n    \"device\": {\r\n        \"id\": \"b1\"\r\n    },\r\n    \"trailer\": {\r\n        \"id\": \"aseMaOvfVkEyMpdhT7H9YnQ\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{domain}}:8084/api/v1/trailer-attachments",
+							"protocol": "https",
+							"host": [
+								"{{domain}}"
+							],
+							"port": "8084",
+							"path": [
+								"api",
+								"v1",
+								"trailer-attachments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Trailer Attachments",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://{{domain}}:8084/api/v1/trailer-attachments/",
+							"protocol": "https",
+							"host": [
+								"{{domain}}"
+							],
+							"port": "8084",
+							"path": [
+								"api",
+								"v1",
+								"trailer-attachments",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Feed",
+			"item": [
+				{
+					"name": "Get Co-ordinates",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{domain}}:8084/api/v1/feed/co-ordinates?fromVersion=0000000001243b93",
+							"protocol": "https",
+							"host": [
+								"{{domain}}"
+							],
+							"port": "8084",
+							"path": [
+								"api",
+								"v1",
+								"feed",
+								"co-ordinates"
+							],
+							"query": [
+								{
+									"key": "deviceId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "1000",
+									"disabled": true
+								},
+								{
+									"key": "fromVersion",
+									"value": "0000000001243b93"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Odometer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{domain}}:8084/api/v1/odometer?deviceId=b1",
+							"protocol": "https",
+							"host": [
+								"{{domain}}"
+							],
+							"port": "8084",
+							"path": [
+								"api",
+								"v1",
+								"odometer"
+							],
+							"query": [
+								{
+									"key": "deviceId",
+									"value": "b1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "domain",
+			"value": "localhost,mule-test.primeinc.com",
+			"type": "string"
+		}
+	]
+}

@@ -128,7 +128,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://{{domain}}:8084/api/v1/shipment-logs?driverId",
+							"raw": "https://{{domain}}:8084/api/v1/shipment-logs?driverId=b9",
 							"protocol": "https",
 							"host": [
 								"{{domain}}"
@@ -142,7 +142,7 @@
 							"query": [
 								{
 									"key": "driverId",
-									"value": null
+									"value": "b9"
 								}
 							]
 						}
@@ -186,7 +186,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"documentNumber\": \"1171366\",\r\n\t\"shipperName\": \"Prestage Foods\",\r\n\t\"id\": \"a3eja4eVXWUSrNMj_eLoNYw\"\r\n}",
+							"raw": "{\r\n\t\"documentNumber\": \"1234567\",\r\n\t\"shipperName\": \"McDonalds Foods\",\r\n\t\"id\": \"a3eja4eVXWUSrNMj_eLoNYw\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -242,7 +242,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://{{domain}}:8084/api/v1/trailer-attachments?deviceId",
+							"raw": "https://{{domain}}:8084/api/v1/trailer-attachments?deviceId=b1",
 							"protocol": "https",
 							"host": [
 								"{{domain}}"
@@ -256,7 +256,7 @@
 							"query": [
 								{
 									"key": "deviceId",
-									"value": null
+									"value": "b1"
 								}
 							]
 						}
@@ -299,7 +299,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://{{domain}}:8084/api/v1/trailer-attachments/",
+							"raw": "https://{{domain}}:8084/api/v1/trailer-attachments/ao-Oj5ONfEkyFISfvqel4rg",
 							"protocol": "https",
 							"host": [
 								"{{domain}}"
@@ -309,7 +309,50 @@
 								"api",
 								"v1",
 								"trailer-attachments",
-								""
+								"ao-Oj5ONfEkyFISfvqel4rg"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Diagnostics",
+			"item": [
+				{
+					"name": "Get Odometer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{domain}}:8084/api/v1/odometer",
+							"protocol": "https",
+							"host": [
+								"{{domain}}"
+							],
+							"port": "8084",
+							"path": [
+								"api",
+								"v1",
+								"odometer"
+							],
+							"query": [
+								{
+									"key": "deviceId",
+									"value": "b1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "fromVersion",
+									"value": null,
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -326,7 +369,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://{{domain}}:8084/api/v1/feed/co-ordinates?fromVersion=0000000001243c5b",
+							"raw": "https://{{domain}}:8084/api/v1/feed/co-ordinates?fromVersion&limit",
 							"protocol": "https",
 							"host": [
 								"{{domain}}"
@@ -341,17 +384,16 @@
 							"query": [
 								{
 									"key": "deviceId",
-									"value": "",
-									"disabled": true
-								},
-								{
-									"key": "limit",
-									"value": "1000",
+									"value": "b1",
 									"disabled": true
 								},
 								{
 									"key": "fromVersion",
-									"value": "0000000001243c5b"
+									"value": null
+								},
+								{
+									"key": "limit",
+									"value": null
 								}
 							]
 						}
@@ -364,7 +406,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://{{domain}}:8084/api/v1/odometer?deviceId=b1",
+							"raw": "https://{{domain}}:8084/api/v1/feed/odometer",
 							"protocol": "https",
 							"host": [
 								"{{domain}}"
@@ -373,17 +415,139 @@
 							"path": [
 								"api",
 								"v1",
+								"feed",
 								"odometer"
 							],
 							"query": [
 								{
 									"key": "deviceId",
-									"value": "b1"
+									"value": "b1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "fromVersion",
+									"value": "",
+									"disabled": true
 								}
 							]
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get Fuel Level",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{domain}}:8084/api/v1/feed/fuel",
+							"protocol": "https",
+							"host": [
+								"{{domain}}"
+							],
+							"port": "8084",
+							"path": [
+								"api",
+								"v1",
+								"feed",
+								"fuel"
+							],
+							"query": [
+								{
+									"key": "deviceId",
+									"value": "b1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "fromVersion",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "measurement",
+									"value": "PERCENT",
+									"description": "PERCENT,LITER",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Process API",
+			"item": [
+				{
+					"name": "To GeoTab",
+					"item": [
+						{
+							"name": "GeoTab Driver Change API",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"code\": \"TEST DRIVER\",\r\n    \"order\": \"1234567\",\r\n    \"customerName\": \"MULE TEST CUSTOMER\",\r\n    \"commodityCode\": \"22\",\r\n    \"trailer\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{domain}}:9091/geotab/drivers",
+									"protocol": "https",
+									"host": [
+										"{{domain}}"
+									],
+									"port": "9091",
+									"path": [
+										"geotab",
+										"drivers"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "To IBMi",
+					"item": [
+						{
+							"name": "GeoTab Feed API",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "https://{{domain}}:9091/geotab/feed/gps",
+									"protocol": "https",
+									"host": [
+										"{{domain}}"
+									],
+									"port": "9091",
+									"path": [
+										"geotab",
+										"feed",
+										"gps"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		}
